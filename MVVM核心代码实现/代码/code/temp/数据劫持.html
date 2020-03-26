@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <input type="text" id="input" />
+    <script>
+      // 定义一个空的obj对象
+      var obj = {};
+      // 定义一个空数据
+      var value = "";
+      // 我们使用Object.defineProperty进行数据劫持,
+      // 给obj添加一个名叫msg的属性
+      // 改函数接收三个参数
+      // 1.第一个参数，是一个对象
+      // 2.第二个参数，是给该对象上设置的属性名
+      // 3.第三个参数，是一个配置对象，可以配置该属性的set/get方法
+      Object.defineProperty(obj, "msg", {
+        set: function(newValue) {
+          console.log("执行了set函数");
+          // 当数据发生变动时，我们重新渲染对应的html
+          document.querySelector("#app").innerHTML = newValue;
+          value = newValue;
+        },
+        get: function() {
+          console.log("执行了get函数");
+          return value;
+        }
+      });
+      // 监听input事件，当发生变化时
+      // 重新设置obj的msg属性，触发set函数，则view自动更新
+      document.querySelector("#input").addEventListener("input", function(e) {
+        obj.msg = e.target.value;
+      });
+    </script>
+  </body>
+</html>

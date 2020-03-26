@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button onclick="sell()">尾盘开售了</button>
+    <script>
+      // 定义一个事件处理中心
+      // 该对象中包含subs的数组，存放需要遍历执行的函数
+      // 相当于客户名册，只不过需要提供一个添加和通知的功能
+      function EventHandle() {
+        var subs = [];
+        // 添加需要执行的函数
+        this.addSub = function(sub) {
+          sub && subs.push(sub);
+        };
+        // 遍历通知
+        this.notify = function() {
+          subs.forEach(function(sub) {
+            sub.update();
+          });
+        };
+      }
+      // 实例化
+      var ev = new EventHandle();
+
+      // 尾盘开售了
+      // 发布者
+      function sell() {
+        console.log("尾盘开售了");
+        ev.notify();
+      }
+
+      // 订阅者客户小明
+      (function Ming() {
+        var myName = "小明";
+        ev.addSub({
+          update: function() {
+            console.log(myName + "接收到了通知");
+          }
+        });
+      })();
+
+      // 订阅者客户小红
+      (function Hong() {
+        var myName = "小红";
+        ev.addSub({
+          update: function() {
+            console.log(myName + "接收到了通知");
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
